@@ -1,31 +1,29 @@
 @echo off
-REM ==========================================
-REM AppKeeper - Windows Build Script
-REM Requires Python 3.10 or later
-REM ==========================================
+setlocal
+chcp 65001 > nul
 
-echo [AppKeeper] Installing required libraries...
-python -m pip install customtkinter psutil pystray pillow pyinstaller
+echo ==========================================
+echo AppKeeper - Windows Build Script
+echo ==========================================
 
-echo.
-echo [AppKeeper] Generating embedded icon data...
-:: assets フォルダ内の gen_icon_data.py を実行
-python assets/gen_icon_data.py
-if errorlevel 1 (
-    echo [AppKeeper] WARNING: icon_data.py generation failed. Icons may not display correctly.
+echo [1/3] Installing required libraries...
+python -m pip install --quiet customtkinter psutil pystray pillow pyinstaller
+
+echo [2/3] Generating icon data...
+if exist "assets/gen_icon_data.py" (
+    python "assets/gen_icon_data.py"
 )
 
-echo.
-echo [AppKeeper] Building exe using AppKeeper.spec...
-:: AppKeeper.spec を使用してビルド
-python -m PyInstaller --clean AppKeeper.spec
+echo [3/3] Building executable using AppKeeper.spec...
+python -m PyInstaller --clean --noconfirm "AppKeeper.spec"
 
 echo.
-if exist dist\AppKeeper.exe (
-    echo [AppKeeper] Build succeeded!
-    echo [AppKeeper] AppKeeper.exe contains all icons - no extra files needed.
-    echo [AppKeeper] Output: dist\AppKeeper.exe
+if exist "dist\AppKeeper.exe" (
+    echo --- Build Succeeded ---
+    echo Output: dist\AppKeeper.exe
 ) else (
-    echo [AppKeeper] Build failed. Please check the error messages above.
+    echo --- Build Failed ---
+    echo Please check the error messages above.
 )
+
 pause
