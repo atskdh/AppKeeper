@@ -1,0 +1,18 @@
+# Byte-code files
+*.pyc
+__pycache__/
+
+# PyInstaller build artifacts
+build/
+dist/
+*.spec
+
+# OS generated files
+.DS_Store
+thumbs.db
+
+# Log files
+*.log
+
+# Config files (if any sensitive data is stored)
+# config.json

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>AppKeeper v2.9 運用マニュアル</title>
+    <style>
+        body {
+            font-family: 'Meiryo', 'Hiragino Kaku Gothic ProN', 'MS PGothic', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background-color: #fff;
+            font-size: 15px;
+        }
+        .container {
+            width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        h1, h2, h3, h4 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        h1 { font-size: 26px; color: #111; }
+        h2 { font-size: 22px; color: #222; }
+        h3 { font-size: 18px; color: #333; }
+        h4 { font-size: 15px; color: #444; border-bottom: none; margin-top: 24px; }
+        p {
+            word-break: normal;
+            overflow-wrap: break-word;
+            margin: 16px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            table-layout: auto;
+        }
+        th {
+            background-color: #f7f7f7;
+            font-weight: bold;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: top;
+            line-height: 1.6;
+        }
+        code {
+            font-family: 'Courier New', monospace;
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 13px;
+            color: #d63384;
+        }
+        pre {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-left: 4px solid #0078d4;
+            padding: 15px;
+            font-size: 13px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            line-height: 1.7;
+            overflow-x: auto;
+            margin: 16px 0;
+            color: #333;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: block;
+        }
+        .img-caption {
+            display: block;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #eee;
+            margin: 40px 0;
+        }
+        ul, ol { padding-left: 25px; }
+        li { margin-bottom: 12px; }
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+            margin-right: 5px;
+        }
+        .badge-primary { background-color: #0078d4; }
+        .badge-success { background-color: #1e8449; }
+        .badge-warn    { background-color: #d68910; }
+        .note {
+            background-color: #f0f7ff;
+            border-left: 4px solid #0078d4;
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        .warn {
+            background-color: #fff8e1;
+            border-left: 4px solid #f39c12;
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        .step-box {
+            border: 1px solid #eee;
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        @media print {
+            .container { width: 100%; padding: 0; }
+            .page-break-before { page-break-before: always; }
+            h1, h2, h3 { page-break-after: avoid; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<h1>AppKeeper v2.9 運用マニュアル</h1>
+<p style="color:#666; font-size:13px;">最終更新: 2026年3月</p>
+
+<!-- ============================================================ -->
+<h2>1. はじめに</h2>
+<p>「AppKeeper」は、Windows上で動作する各種アプリケーションやスクリプトの起動管理・死活監視を自動化するためのツールです。特に「起動時に一度だけ実行したい処理」と「その後の常時監視」をシームレスに連携させることで、無人環境での安定稼働を実現します。</p>
+
+<div class="note">
+    <strong>v2.9 の主要なアップデート</strong><br>
+    ・起動スクリプトの「プロセス起動待ち」機能による、確実な処理のバトンタッチ。<br>
+    ・監視エントリの「二重起動防止」オプションによる、起動スクリプトとの安全な併用。<br>
+    ・高解像度環境でも見切れない、最適化されたUIレイアウト。
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>2. 起動スクリプトの運用</h2>
+<p>PC起動時に一度だけ実行が必要な初期化用BATファイルや、ライセンス認証ツールなどを登録します。AppKeeperは登録された順番にスクリプトを実行し、指定された待機条件が満たされるまで次の処理を保留します。</p>
+
+<img src="manual_assets/main_startup_tab.png" alt="起動スクリプトタブ画面">
+<span class="img-caption">図1：起動スクリプト管理画面（タブ形式）</span>
+
+<h3>2.1 設定の具体例（YakultWWYの事例）</h3>
+<p>以下の画像は、実際の運用環境での設定例です。BATファイルを実行した後、特定のプロセスが立ち上がるのを待機する設定になっています。</p>
+
+<img src="manual_assets/startup_config_example.png" alt="起動スクリプト設定詳細">
+<span class="img-caption">図2：起動スクリプトの設定詳細</span>
+
+<table>
+    <thead><tr><th>項目</th><th>説明</th></tr></thead>
+    <tbody>
+        <tr><td><strong>コンソールを表示する</strong></td><td>チェックを入れると、BAT実行時にコマンドプロンプト画面が表示されます。デバッグや進捗確認に有効です。</td></tr>
+        <tr><td><strong>待機モード</strong></td><td>「プロセス起動待ち」を選択することで、アプリ本体（例：<code>notepad.exe</code>）が起動するまで、AppKeeperは監視フェーズへの移行を待機します。</td></tr>
+        <tr><td><strong>タイムアウト</strong></td><td>指定時間内にプロセスが起動しなかった場合、待機を打ち切って次へ進みます。</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 class="page-break-before">3. 監視エントリの運用</h2>
+<p>アプリケーションが正常に立ち上がった後、24時間体制でその状態を監視し、異常時に再起動を行うための設定です。</p>
+
+<img src="manual_assets/main_entry_tab.png" alt="監視エントリタブ画面">
+<span class="img-caption">図3：監視エントリ管理画面</span>
+
+<h3>3.1 二重起動の防止設定</h3>
+<p>起動スクリプトと併用する場合、最も重要なのが「起動オプション」の設定です。</p>
+
+<img src="manual_assets/entry_config_example.png" alt="監視エントリ設定詳細">
+<span class="img-caption">図4：監視エントリの設定詳細</span>
+
+<div class="warn">
+    <strong>重要：二重起動防止オプション</strong><br>
+    「既に起動中なら起動をスキップ」にチェックを入れてください。これにより、起動スクリプトですでに立ち上がっているアプリに対し、AppKeeperが重ねて起動をかける（二重起動）のを防ぎます。
+</div>
+
+<table>
+    <thead><tr><th>項目</th><th>説明</th></tr></thead>
+    <tbody>
+        <tr><td><strong>常時監視モード</strong></td><td>プロセスが落ちた場合に、何度でも自動で再起動を試みます。</td></tr>
+        <tr><td><strong>ハング検知</strong></td><td>ウィンドウが「応答なし」になった場合に、強制終了して再起動します。</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 class="page-break-before">4. 動作ログの確認</h2>
+<p>AppKeeperがどのように処理をバトンタッチしているかは、右側のログパネルでリアルタイムに確認できます。</p>
+
+<pre>
+[2026-03-18 15:00:43] [起動スクリプト] 実行しました: startup
+[2026-03-18 15:00:43] [起動スクリプト] プロセス起動待ち: notepad.exe (最大120秒)
+[2026-03-18 15:01:50] [起動スクリプト] プロセス確認完了: notepad.exe (58秒後)
+[2026-03-18 15:01:50] [notepad] 監視を開始しました
+[2026-03-18 15:01:50] [notepad] プロセスが既に起動中のため初回起動をスキップしました（監視は継続）
+</pre>
+
+<p>このログの流れは、<strong>「起動スクリプトがアプリを立ち上げ、AppKeeperがその起動を確認した後に監視に移行し、二重起動を回避した」</strong>という完璧な連携を示しています。</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>5. 推奨されるセットアップ手順</h2>
+<div class="step-box">
+    <ol>
+        <li><strong>起動スクリプト</strong>タブで、アプリ起動用の <code>.bat</code> を登録。</li>
+        <li>待機設定で<strong>「プロセス起動待ち」</strong>を選択し、アプリの <code>.exe</code> 名を入力。</li>
+        <li><strong>監視エントリ</strong>タブで、同じアプリを登録。</li>
+        <li>監視設定の最下部にある<strong>「既に起動中なら起動をスキップ」</strong>をオンにする。</li>
+        <li>メイン画面で<strong>「Windows起動時に自動起動」</strong>にチェックを入れる。</li>
+    </ol>
+</div>
+
+<p style="text-align: center; margin-top: 60px; color: #999; font-size: 12px;">
+    © 2026 AppKeeper Project - All Rights Reserved.
+</p>
+
+</div>
+</body>
+</html>
