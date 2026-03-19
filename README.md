@@ -10,7 +10,7 @@ AppKeeper は、Windows上で動作するアプリケーションやスクリプ
 1. **[最新版をダウンロード](https://github.com/atskdh/AppKeeper/releases/latest )**
    - `AppKeeper_v2.9.zip` をダウンロードして解凍してください。
 2. **AppKeeper.exe を実行**
-   - 同梱の `config.json` をデフォルトサンプルConfigです。
+   - 同梱の `config.json` はサンプルConfigです。
 3. **マニュアルを確認**
    - 詳細な使い方は [ビジュアルマニュアル](https://atskdh.github.io/AppKeeper/docs/AppKeeper_manual_v29.html ) をご覧ください。
 
